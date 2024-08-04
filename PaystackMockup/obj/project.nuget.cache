@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "IFeN3aZkBGkeoJqQWmETWHBoLhPEEcDWp0GxgZfZpRMW0+85k3sgC1JhHFge9w4SUVBSet0NAjKKhn0665syGQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ryan\\Documents\\Varsity College\\3rd Year BCAD\\WIL\\Paystack Mockup\\PaystackMockup\\PaystackMockup\\PaystackMockup.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ryan\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

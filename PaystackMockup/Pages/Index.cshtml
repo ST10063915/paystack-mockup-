@@ -1,0 +1,72 @@
+﻿@page
+@model PaystackMockup.Pages.IndexModel
+@{
+    // Set the title for the page
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Payment Page</h2>
+
+<!-- Form for payment details -->
+<form method="post" asp-page-handler="CreatePayment">
+    <!-- Input field for the user's name -->
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="Name" required>
+    </div>
+
+    <!-- Input field for the user's email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="Email" required>
+    </div>
+
+    <!-- Input field for the payment amount -->
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" class="form-control" id="amount" name="Amount" required>
+    </div>
+
+    <!-- Checkbox for recurring payment option -->
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="recurring" name="Recurring" value="true">
+        <label class="form-check-label" for="recurring">Recurring</label>
+        <input type="hidden" name="Recurring" value="false" /> <!-- Ensures "false" is sent if the checkbox is not checked -->
+    </div>
+
+    <!-- Submit button for the form -->
+    <button type="submit" class="btn btn-primary">Pay Now</button>
+</form>
+
+<!-- If a plan code is present, trigger the Paystack payment popup -->
+@if (Model.PlanCode != null)
+{
+    <!-- Paystack Inline JS library -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script type="text/javascript">
+        // Trigger Paystack payment popup
+        var handler = PaystackPop.setup({
+            key: '@Model.PaystackPublicKey', // Use the public key from the model
+            email: '@Model.PaymentRequest.Email', // User's email for payment
+            amount: @Model.PaymentRequest.Amount * 100, // Convert to kobo for payment
+            currency: "ZAR", // Set the currency to ZAR (South African Rand)
+            ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a unique reference for the transaction
+            plan: '@Model.PlanCode', // Use the plan code for recurring payment
+
+            // Callback function for successful payment
+            callback: function (response) {
+                alert('Success. Transaction ref is ' + response.reference);
+                // Redirect or update the UI as necessary
+                window.location.href = '@Url.Page("/Index")';
+            },
+
+            // Function to handle when the payment window is closed without completing the payment
+            onClose: function () {
+                alert('Window closed.');
+            }
+        });
+
+        // Open the payment iframe
+        handler.openIframe();
+    </script>
+}
